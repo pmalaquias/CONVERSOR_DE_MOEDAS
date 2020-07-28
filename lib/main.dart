@@ -39,14 +39,43 @@ class _HomeState extends State<Home> {
   double dolar;
   double euro;
 
+  void _clearAll() {
+    realController.text = "";
+    dolarController.text = "";
+    euroController.text = "";
+  }
+
   void _realChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _clearAll();
+      return;
+    }
+
+    double real = double.parse(text);
+    dolarController.text = (real / dolar).toStringAsFixed(2);
+    euroController.text = (real / euro).toStringAsFixed(2);
   }
+
   void _dolarChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _clearAll();
+      return;
+    }
+
+    double dolar = double.parse(text);
+    realController.text = (dolar * this.dolar).toStringAsFixed(2);
+    euroController.text = (dolar * this.dolar / euro).toStringAsFixed(2);
   }
+
   void _euroChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _clearAll();
+      return;
+    }
+
+    double euro = double.parse(text);
+    realController.text = (euro * this.euro).toStringAsFixed(2);
+    dolarController.text = (euro * this.euro / dolar).toStringAsFixed(2);
   }
 
   @override
@@ -57,6 +86,9 @@ class _HomeState extends State<Home> {
           title: Text("\$ Conversor \$"),
           backgroundColor: Colors.amber,
           centerTitle: true,
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.refresh), onPressed: _clearAll)
+          ],
         ),
         body: FutureBuilder<Map>(
             future: getData(),
@@ -103,8 +135,8 @@ class _HomeState extends State<Home> {
                           biuldTextField(
                               "Reais", "R\$", realController, _realChanged),
                           Divider(),
-                          biuldTextField(
-                            "Dolares", "US\$", dolarController, _dolarChanged),
+                          biuldTextField("Dolares", "US\$", dolarController,
+                              _dolarChanged),
                           Divider(),
                           biuldTextField(
                               "Euros", "€", euroController, _euroChanged),
