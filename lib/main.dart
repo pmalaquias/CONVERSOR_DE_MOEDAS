@@ -9,16 +9,15 @@ void main() async {
   runApp(MaterialApp(
     home: Home(),
     theme: ThemeData(
-      hintColor: Colors.amber,
-      primaryColor: Colors.white,
-      inputDecorationTheme: InputDecorationTheme(
-        enabledBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        focusedBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.amber)),
-        hintStyle: TextStyle(color: Colors.amber),    
-      )
-    ),
+        hintColor: Colors.amber,
+        primaryColor: Colors.white,
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+          focusedBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.amber)),
+          hintStyle: TextStyle(color: Colors.amber),
+        )),
   ));
 }
 
@@ -33,8 +32,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final realController = TextEditingController();
+  final dolarController = TextEditingController();
+  final euroController = TextEditingController();
+
   double dolar;
   double euro;
+
+  void _realChanged(String text) {
+    print(text);
+  }
+  void _dolarChanged(String text) {
+    print(text);
+  }
+  void _euroChanged(String text) {
+    print(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,41 +100,14 @@ class _HomeState extends State<Home> {
                             size: 150.0,
                             color: Colors.amber,
                           ),
-                          TextField(
-                            decoration: InputDecoration(
-                                labelText: "Reais",
-                                labelStyle: TextStyle(color: Colors.amber),
-                                border: OutlineInputBorder(),
-                                prefixText: "R\$"),
-                            style: TextStyle(
-                              color: Colors.amber,
-                              fontSize: 25.0,
-                            ),
-                          ),
+                          biuldTextField(
+                              "Reais", "R\$", realController, _realChanged),
                           Divider(),
-                          TextField(
-                            decoration: InputDecoration(
-                                labelText: "Dolares",
-                                labelStyle: TextStyle(color: Colors.amber),
-                                border: OutlineInputBorder(),
-                                prefixText: "US\$"),
-                            style: TextStyle(
-                              color: Colors.amber,
-                              fontSize: 25.0,
-                            ),
-                          ),
+                          biuldTextField(
+                            "Dolares", "US\$", dolarController, _dolarChanged),
                           Divider(),
-                          TextField(
-                            decoration: InputDecoration(
-                                labelText: "Euro",
-                                labelStyle: TextStyle(color: Colors.amber),
-                                border: OutlineInputBorder(),
-                                prefixText: "€"),
-                            style: TextStyle(
-                              color: Colors.amber,
-                              fontSize: 25.0,
-                            ),
-                          )
+                          biuldTextField(
+                              "Euros", "€", euroController, _euroChanged),
                         ],
                       ),
                     );
@@ -129,4 +115,22 @@ class _HomeState extends State<Home> {
               }
             }));
   }
+}
+
+Widget biuldTextField(String label, String prefix,
+    TextEditingController controller, Function function) {
+  return TextField(
+    controller: controller,
+    decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.amber),
+        border: OutlineInputBorder(),
+        prefixText: prefix),
+    style: TextStyle(
+      color: Colors.amber,
+      fontSize: 25.0,
+    ),
+    onChanged: function,
+    keyboardType: TextInputType.number,
+  );
 }
